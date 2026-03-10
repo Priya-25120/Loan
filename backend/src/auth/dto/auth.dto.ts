@@ -60,3 +60,18 @@ export class LoginDto {
   @MinLength(6)
   password: string;
 }
+
+export class ContactDto {
+  @IsString()
+  name: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @IsString()
+  message: string;
+}

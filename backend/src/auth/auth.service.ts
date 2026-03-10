@@ -5,13 +5,15 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User, UserDocument } from '../database/schemas/user.schema';
 import { Admin, AdminDocument } from '../database/schemas/admin.schema';
-import { RegisterDto, LoginDto } from './dto/auth.dto';
+import { ContactMessage, ContactMessageDocument } from '../database/schemas/contact-message.schema';
+import { RegisterDto, LoginDto, ContactDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Admin.name) private adminModel: Model<AdminDocument>,
+    @InjectModel(ContactMessage.name) private contactMessageModel: Model<ContactMessageDocument>,
     private jwtService: JwtService,
   ) {}
 
@@ -132,5 +134,24 @@ export class AuthService {
     const userObj = user.toObject();
     delete userObj.password;
     return userObj;
+  }
+
+  async submitContact(contactDto: ContactDto) {
+    const { name, email, phone, message } = contactDto;
+
+    const newMessage = new this.contactMessageModel({
+      name,
+      email,
+      phone,
+      message,
+      status: 'unread',
+    });
+
+    const savedMessage = await newMessage.save();
+
+    return {
+      message: 'Contact message submitted successfully',
+      contactMessage: savedMessage,
+    };
   }
 }

@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User, UserSchema } from '../database/schemas/user.schema';
 import { Admin, AdminSchema } from '../database/schemas/admin.schema';
+import { ContactMessage, ContactMessageSchema } from '../database/schemas/contact-message.schema';
 import { JwtStrategy } from '../common/guards/jwt.strategy';
 
 @Module({
@@ -23,6 +24,7 @@ import { JwtStrategy } from '../common/guards/jwt.strategy';
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Admin.name, schema: AdminSchema },
+      { name: ContactMessage.name, schema: ContactMessageSchema },
     ]),
   ],
   providers: [AuthService, JwtStrategy],
